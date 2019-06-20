@@ -1,0 +1,80 @@
+# 加解密根密码
+jasypt:
+  encryptor:
+    password: xht #根密码
+# redis 相关
+spring:
+  redis:
+    password:
+    host: ${REDIS-HOST:127.0.0.1}
+  sleuth:
+    enabled: true
+    sampler:
+      percentage: 1.0
+  zipkin:
+    baseUrl: http://localhost:9411/
+  
+# 暴露监控端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+# feign 配置
+feign:
+  hystrix:
+    enabled: true
+  okhttp:
+    enabled: true
+  httpclient:
+    enabled: false
+  client:
+    config:
+      default:
+        connectTimeout: 10000
+        readTimeout: 10000
+  compression:
+    request:
+      enabled: true
+    response:
+      enabled: true
+# hystrix If you need to use ThreadLocal bound variables in your RequestInterceptor`s
+# you will need to either set the thread isolation strategy for Hystrix to `SEMAPHORE or disable Hystrix in Feign.
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          strategy: SEMAPHORE
+          thread:
+            timeoutInMilliseconds: 60000
+  shareSecurityContext: true
+
+#请求处理的超时时间
+ribbon:
+  ReadTimeout: 10000
+  ConnectTimeout: 10000
+
+# mybaits-plus配置
+mybatis-plus:
+  # MyBatis Mapper所对应的XML文件位置
+  mapper-locations: classpath:/mapper/*Mapper.xml
+  global-config:
+    # 关闭MP3.0自带的banner
+    banner: false
+    db-config:
+      # 主键类型
+      id-type: auto
+
+## spring security 配置
+security:
+  oauth2:
+    client:
+      # 默认放行url,如果子模块重写这里的配置就会被覆盖
+      ignore-urls:
+        - /actuator/**
+        - /v2/api-docs
+    resource:
+      loadBalanced: true
+      token-info-uri: http://uaa/oauth/check_token

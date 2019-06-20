@@ -1,0 +1,43 @@
+## spring security 配置
+security:
+  oauth2:
+    client:
+      client-id: ltJPpR50wT0oIY9kfOe1Iw==
+      client-secret: ltJPpR50wT0oIY9kfOe1Iw==
+      scope: server
+
+# 数据源
+spring:
+  datasource:
+    url: jdbc:mysql://${MYSQL-HOST:10.10.0.165}:${MYSQL-PORT:3306}/${MYSQL-DB:xht_core}?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8&allowMultiQueries=true
+    type: com.zaxxer.hikari.HikariDataSource
+    username: ${MYSQL-USER:root}
+    password: ${MYSQL-PWD:root}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+# 文件系统
+minio:
+  url: http://127.0.0.1:9000
+  access-key: 20LTHEY7F4RS800432W2
+  secret-key: hDS0Kx98SKhxqzDW49MwMmKO9WJwlMaeSYQE2Hd+
+
+# Logger Config
+logging:
+  level:
+    com.xhtcloud.azy.manage.mapper: debug
+
+# 租户表维护
+xht:
+  tenant:
+    column: tenant_id
+    tables:
+      - sys_user
+      - sys_role
+      - sys_dept
+      - sys_log
+      - sys_social_details
+      - sys_dict
+      - sys_dict_item
+      - sys_public_param
+      - sys_log
+

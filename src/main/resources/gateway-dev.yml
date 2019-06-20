@@ -1,0 +1,37 @@
+security:
+  encode:
+    # 前端密码密钥，必须16位
+    key: '8888888888888888'
+
+# 不校验验证码终端
+ignore:
+  clients:
+    - test
+  swagger-providers:
+    - uaa
+    - txManager
+spring:
+    cloud:
+        gateway:
+            routes:
+            - id: uaa
+              uri: lb://uaa
+              predicates:
+              - Path=/uaa/**
+              filters:
+              - name: ValidateCodeGatewayFilter
+              - name: PasswordDecoderFilter
+            - id: upmsBiz
+              uri: http://manage
+              predicates:
+              - Path=/manage/**
+              filters:
+              - name: RequestRateLimiter
+                args:
+                    key-resolver: "#{@remoteAddrKeyResolver}"
+                    redis-rate-limiter.replenishRate: 10
+                    redis-rate-limiter.burstCapacity: 20
+            - id: zipkin
+              uri: lb://zipkin
+              predicates:
+              - Path=/zipkin/**   
